@@ -25,7 +25,7 @@ echo Adding key
 ssh-add $args "$SSH_PATH/deploy_key"
 
 echo Scanning host
-ssh-keyscan $args -t rsa $HOST >> "$SSH_PATH/known_hosts"
+ssh-keyscan $args -t ssh-ed25519 $HOST >> "$SSH_PATH/known_hosts"
 
 echo Connecting
 ssh -o StrictHostKeyChecking=no -A -tt -p ${PORT:-22} $args $USER@$HOST "$*"
