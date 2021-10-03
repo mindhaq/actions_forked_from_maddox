@@ -2,6 +2,12 @@
 
 set -e
 
+args=""
+if [ $DEBUG = "true" ]
+then
+    args="$args -v"
+fi
+
 SSH_PATH="$HOME/.ssh"
 
 mkdir -p "$SSH_PATH"
@@ -18,4 +24,4 @@ ssh-add "$SSH_PATH/deploy_key"
 
 ssh-keyscan -t rsa $HOST >> "$SSH_PATH/known_hosts"
 
-ssh -o StrictHostKeyChecking=no -A -tt -p ${PORT:-22} $USER@$HOST "$*"
+ssh -o StrictHostKeyChecking=no -A -tt -p ${PORT:-22} $args $USER@$HOST "$*"
