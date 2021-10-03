@@ -20,8 +20,12 @@ chmod 600 "$SSH_PATH/known_hosts"
 chmod 600 "$SSH_PATH/deploy_key"
 
 eval $(ssh-agent)
-ssh-add "$SSH_PATH/deploy_key"
 
-ssh-keyscan -t rsa $HOST >> "$SSH_PATH/known_hosts"
+echo Adding key
+ssh-add $args "$SSH_PATH/deploy_key"
 
+echo Scanning host
+ssh-keyscan $args -t rsa $HOST >> "$SSH_PATH/known_hosts"
+
+echo Connecting
 ssh -o StrictHostKeyChecking=no -A -tt -p ${PORT:-22} $args $USER@$HOST "$*"
